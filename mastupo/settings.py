@@ -54,7 +54,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'jobs',
-    
+    'profiles',
     # The Django sites framework is required
     'django.contrib.sites',
 
