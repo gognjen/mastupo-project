@@ -19,8 +19,7 @@ class Job(models.Model):
     date_modified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     phone_number = models.ForeignKey(PhoneNumber)
-    status = models.CharField(max_length=30)
-    workers_needed = models.IntegerField(default=0)    
+    status = models.CharField(max_length=30)    
     address = models.CharField(max_length=100)
     
     def user_applied(self, user):

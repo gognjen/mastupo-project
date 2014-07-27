@@ -57,6 +57,7 @@ INSTALLED_APPS = (
     'jobs',
     'profiles',
     'widget_tweaks',
+    'south',
     # The Django sites framework is required
     'django.contrib.sites',
 
