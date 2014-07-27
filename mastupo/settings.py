@@ -56,6 +56,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'jobs',
     'profiles',
+    'widget_tweaks',
     # The Django sites framework is required
     'django.contrib.sites',
 
