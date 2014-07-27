@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<h1>Objavi novi oglas za posao</h1>
+   
+<form class="form" action="{% url 'jobs:add_job' %}" method="post">
+    {% csrf_token %}
+    <fieldset>           
+    {% for field in job_form %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        <div class="form-group {% if field.errors %}has-error{% endif %}">                   
+            {{ field|add_class:'form-control input-lg' }}            
+            {% if field.errors %}
+            <span class='text-danger'>{{ field.errors|join:'<br />' }}</span>
+            {% endif %}        
+            {% if field.help_text %}
+            <span class="help-block ">{{ field.help_text }}</span>
+            {% endif %}       
+        </div>    
+    {% endfor %}
+    <hr />
+    {% for field in phone_number_form %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        <div class="form-group {% if field.errors %}has-error{% endif %}">                   
+            {{ field|add_class:'form-control input-lg' }}            
+            {% if field.errors %}
+            <span class='text-danger'>{{ field.errors|join:'<br />' }}</span>
+            {% endif %}        
+            {% if field.help_text %}
+            <span class="help-block ">{{ field.help_text }}</span>
+            {% endif %}       
+        </div>    
+    {% endfor %}
+    </fieldset>
+    <div class="form-group">
+      
+        <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+      
+    </div>
+    
+  
+</form>
+
+{% endblock %}

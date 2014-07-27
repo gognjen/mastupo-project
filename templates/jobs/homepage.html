@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Mali studentski poslovi</h1>    
+    <p>Pocetna stranica</p>
+    <p>
+    <a href="{% url 'jobs:job_list' %}" role="button">Pronađi posao</a>
+    <a href="{% url 'jobs:add_job' %}" role="button">Objavi posao</a>
+    </p>
+{% endblock %}
+     

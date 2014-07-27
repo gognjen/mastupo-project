@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en"> 
+  <body>
+    <ul>
+      <li><a href="{% url "home" %}">Mali studentski poslovi</a></li>
+    {% if user.is_authenticated %}
+      Hello, {{ user.get_full_name }}
+      <li><a href="{% url 'account_logout' %}">Odjavi se</a></li>
+    {% else %}
+      <li><a href="{% url 'account_login' %}">Prijavi se</a></li>
+    {% endif %}          
+    </ul>
+    {% block content %}      
+    {% endblock %}    
+  </body>
+</html>

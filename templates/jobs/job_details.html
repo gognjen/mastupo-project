@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>{{ job.user.first_name }} {{ job.user.last_name }}</h3>            
+            <p>
+            {{ job.description }}
+            </p>
+
+             <p>
+                Cijena: <strong>{{ job.price }}KM</strong>
+            </p>
+            <p>
+                Telefon: <strong>{{ job.phone_number.phone_number }}</strong>
+            </p>
+            <p>
+                Adresa: <strong>{{ job.address }}</strong>
+            </p>
+            <p>
+                Broj radnika: <strong>{{ job.workers_needed }}</strong>
+            </p>
+            
+    {% if current_user.profile.is_student %}        
+        {% if user_applied %}
+            <form action="{% url 'jobs:cancel_job_application' job_id=job.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Odustani</button>
+            </form>
+        {% else %}
+            {% if job.available %}
+                <form action="{% url 'jobs:apply_for_job' job_id=job.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Prihvati posao</button>
+                </form>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
