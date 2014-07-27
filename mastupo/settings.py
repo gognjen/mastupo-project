@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
 # Quick-start development settings - unsuitable for production
@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'jobs',
     
     # The Django sites framework is required
     'django.contrib.sites',
@@ -76,6 +77,37 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+
+ACCOUNT_SIGNUP_FORM_CLASS = 'jobs.forms.SignupForm'
+
+ACCOUNT_USERNAME_REQUIRED = False
+
+ACCOUNT_EMAIL_REQUIRED = True
+
+ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = False
+
+ACCOUNT_LOGOUT_ON_GET = True
+
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+
+LOGIN_URL = '/accounts/signup/'
+
+LOGIN_REDIRECT_URL = '/'
+
+#ACCOUNT_EMAIL_VERIFICATION = "none"
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'malihoroskop@gmail.com'
+EMAIL_HOST_PASSWORD = 'Og30lisa11'
+DEFAULT_FROM_EMAIL = 'malihoroskop@gmail.com'
+
+
 ROOT_URLCONF = 'mastupo.urls'
 
 WSGI_APPLICATION = 'mastupo.wsgi.application'
@@ -85,15 +117,18 @@ WSGI_APPLICATION = 'mastupo.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 # Parse database configuration from $DATABASE_URL
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+#}
 
 import dj_database_url
-DATABASES['default'] =  dj_database_url.config()
+#DATABASES['default'] =  dj_database_url.config()
+DATABASES = {'default': dj_database_url.config(    
+    default='sqlite:////{0}'.format(os.path.join(BASE_DIR, 'db.sqlite3'))
+)}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -119,4 +154,15 @@ STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
+)
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Absolute path to the media directory
+
+TEMPLATE_DIRS = (
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(BASE_DIR, 'templates'),
 )
