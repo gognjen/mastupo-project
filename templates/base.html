@@ -32,17 +32,17 @@
   <body>
     <div class="container">
       <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
+        <ul class="nav nav-pills pull-right">                    
           {% if user.is_authenticated %}      
           <li><a href="{% url 'account_logout' %}">Odjavi se</a></li>
           {% else %}
+          <li><a href="{% url 'home' %}">Početna</a></li>
+          <li><a href="#">O nama</a></li>
+          <li><a href="{% url 'account_signup' %}">Registruj se</a></li>          
           <li><a href="{% url 'account_login' %}">Prijavi se</a></li>
           {% endif %}          
         </ul>
-        <h3 class="text-muted"><a href="{% url "home" %}">Mali studentski poslovi</a></h3>
+        <h3 class="text-muted">Mali studentski poslovi</h3>
       </div>
       
       {% block content %}                  

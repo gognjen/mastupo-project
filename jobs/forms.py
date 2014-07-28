@@ -12,7 +12,7 @@ class AddJobForm(forms.ModelForm):
     class Meta:
         model = Job
         fields = ('description', 'price', 'address',)
-        
+              
         
 class PhoneNumberForm(forms.ModelForm):
     phone_number = forms.CharField(label=_('Broj telefona'), widget=forms.TextInput())

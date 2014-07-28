@@ -26,7 +26,7 @@ class Job(models.Model):
         return self.jobapplication_set.filter(user=user).count() > 0
     
     def available(self, ):
-        return self.jobapplication_set.count() < self.workers_needed    
+        return self.jobapplication_set.count() == 0    
     
     def __unicode__(self):
         return self.description

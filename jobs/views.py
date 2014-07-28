@@ -4,23 +4,29 @@ from .forms import AddJobForm, PhoneNumberForm
 from .models import Job, PhoneNumber, JobApplication
 from django.contrib.auth.decorators import login_required
 
-# Create your views here.
-def job_list(request):
+
+def home(request):
     if request.user.is_authenticated():                
-        if request.user.profile.is_student:            
-            job_applications = JobApplication.objects.filter(user=request.user)
-            available_jobs = Job.objects.annotate(
-                                            workers_found=Count('jobapplication')
-                                       ).filter(
-                                            workers_found__lt=F('workers_needed')
-                                       ).exclude(
-                                            id__in = job_applications.values_list('job__id', flat=True))
-            return render(request, 'jobs/student/dashboard.html', { 'jobs': available_jobs, 'job_applications': job_applications })
-        else:            
-            jobs = Job.objects.filter(user=request.user)
-            return render(request, 'jobs/job_list.html', { 'jobs': jobs })                
+        return redirect('dashboard')
     else:
         return render(request, 'jobs/homepage.html')
+
+
+@login_required
+def dashboard(request):    
+    if request.user.profile.is_student:            
+        job_applications = JobApplication.objects.filter(user=request.user)
+        available_jobs = Job.objects.annotate(
+                                        workers_found=Count('jobapplication')
+                                   ).filter(
+                                        workers_found=0
+                                   ).exclude(
+                                        id__in = job_applications.values_list('job__id', flat=True))
+        return render(request, 'jobs/student/dashboard.html', { 'jobs': available_jobs, 'job_applications': job_applications })
+    else:            
+        jobs = Job.objects.filter(user=request.user)
+        return render(request, 'jobs/dashboard.html', { 'jobs': jobs })                
+    
 
 
 @login_required
@@ -61,6 +67,40 @@ def add_job(request):
         phone_number_form = PhoneNumberForm(initial={'phone_number': number})
         
     return render(request, 'jobs/add_job.html', { 'job_form': job_form, 'phone_number_form': phone_number_form })
+
+
+@login_required
+def job_edit(request, job_id=None):
+    
+    job = get_object_or_404(Job, pk=job_id)
+    
+    if request.POST:
+        job_form = AddJobForm(request.POST, instance=job)
+        phone_number_form = PhoneNumberForm(request.POST, instance=job.phone_number)
+        if job_form.is_valid() and phone_number_form.is_valid():
+            job = job_form.save(commit=False)
+            job.user = request.user
+            job.status = 'published'
+            #Check phone number
+            number = phone_number_form.save(commit=False)            
+            try:                
+                number = request.user.phonenumber_set.get(phone_number=number.phone_number, user=request.user)                
+            except:
+                if request.user.phonenumber_set.count() == 0:
+                    number.primary = True
+                number.user = request.user
+                number.save()                
+                
+            job.phone_number = number
+            job.save()               
+            return redirect('jobs:detail', job_id=job.id)
+    else:                        
+        job_form = AddJobForm(instance=job)                           
+        phone_number_form = PhoneNumberForm(instance=job.phone_number)
+        
+    return render(request, 'jobs/job_edit.html', { 'job_form': job_form, 'phone_number_form': phone_number_form })
+
+
 
 
 def detail(request, job_id):    
