@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<h1>Izmijeni oglas za posao</h1>
+   
+<form class="form" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend>Lokacija</legend>
+        {% with job_form.address as field %}                   
+            <div class="form-group {% if field.errors %}has-error{% endif %}">                            
+                {{ field|add_class:'form-control input-lg' }}                        
+                {% if field.errors %}
+                <span class='text-danger'>{{ field.errors|join:'<br />' }}</span>
+                {% endif %}                                                       
+            </div>
+            <span class="help-block">Mjesto ili adresa na koju student treba da dođe.</span>
+        {% endwith %}
+    </fieldset>        
+    <fieldset>            
+        <legend>Opis posla</legend>
+        {% with job_form.description as field %}        
+        <div class="form-group {% if field.errors %}has-error{% endif %}">                   
+            {{ field|add_class:'form-control input-lg' }}            
+            {% if field.errors %}
+            <span class='text-danger'>{{ field.errors|join:'<br />' }}</span>
+            {% endif %}                                          
+        </div>
+        <span class="help-block ">Opišite kakav je posao u pitanju. Što više detalja, to bolje.</span>
+        {% endwith %}              
+    </fieldset>
+    <fieldset>
+        <legend>Dodaj broj telefona</legend>
+        {% with phone_number_form.phone_number as field %}                        
+            <div class="form-group {% if field.errors %}has-error{% endif %}">                                                 
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                    {{ field|add_class:'form-control input-lg' }}               
+                </div>     
+                {% if field.errors %}
+                <span class='text-danger'>{{ field.errors|join:'<br />' }}</span>
+                {% endif %}                        
+            </div>
+            <span class="help-block ">Broj telefona će vidjeti samo student koji prihvati posao.</span>                                 
+        {% endwith %}   
+    </fieldset>
+    
+    <fieldset>            
+        <legend>Cijena</legend>
+        {% with job_form.price as field %}        
+        <div class="form-group {% if field.errors %}has-error{% endif %}">                   
+             <div class="input-group input-group-lg">
+                    <span class="input-group-addon">KM</span>
+                    {{ field|add_class:'form-control input-lg' }}               
+                </div>   
+            {% if field.errors %}
+            <span class='text-danger'>{{ field.errors|join:'<br />' }}</span>
+            {% endif %}                                           
+        </div>
+        <span class="help-block ">Napišite koliko novca želite dati za obavljanje ovog posla.</span>
+        {% endwith %}              
+    </fieldset>
+    
+    
+    </fieldset>
+    <div class="form-group">      
+        <button type="submit" class="btn btn-lg btn-primary">Sačuvaj izmjene</button>      
+    </div>
+    
+  
+</form>
+
+{% endblock %}
