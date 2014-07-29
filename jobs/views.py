@@ -74,6 +74,9 @@ def job_edit(request, job_id=None):
     
     job = get_object_or_404(Job, pk=job_id)
     
+    if job.user != request.user:
+        return redirect('dashboard')
+    
     if request.POST:
         job_form = AddJobForm(request.POST, instance=job)
         phone_number_form = PhoneNumberForm(request.POST, instance=job.phone_number)
@@ -109,6 +112,18 @@ def detail(request, job_id):
     current_user = request.user
     return render(request, 'jobs/job_details.html', { 'job': job, 'user_applied': user_applied, 'current_user': current_user })
 
+def job_delete(request, job_id):
+    job = get_object_or_404(Job, pk=job_id)
+    
+    if job.user != request.user:
+        return redirect('dashboard')
+    
+    if request.POST:
+        job.delete()
+        return redirect('dashboard')
+    else:
+        return render(request, 'jobs/job_delete.html', { 'job': job })
+        
 
 def apply_for_job(request, job_id):
     if request.POST:

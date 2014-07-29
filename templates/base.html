@@ -33,7 +33,8 @@
     <div class="container">
       <div class="header">
         <ul class="nav nav-pills pull-right">                    
-          {% if user.is_authenticated %}      
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'home' %}">Početna</a></li>
           <li><a href="{% url 'account_logout' %}">Odjavi se</a></li>
           {% else %}
           <li><a href="{% url 'home' %}">Početna</a></li>

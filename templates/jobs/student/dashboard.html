@@ -3,23 +3,26 @@
 {% block content %}
     <h1>Dostupni poslovi</h1>
     <a href="{% url "jobs:add_job" %}">Dodaj novi oglas za posao</a>
-    {% if jobs %}
+     {% if jobs %}    
         {% for job in jobs %}
-   
-            <h3>{{ job.user.first_name }} {{ job.user.last_name }}</h3>            
-            <p>
-            {{ job.description }}
-            </p>
-            <p>
-                Cijena: <strong>{{ job.price }}KM</strong>
-            </p>            
-            <p>
-            <a href="{% url 'jobs:detail' job_id=job.id %}">
-                Detalji
+        <hr />
+        <div class="media">
+            <a class="pull-left" href="#">
+              <img class="media-object img-circle" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIi8+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
             </a>
-            </p>
-            <hr /> 
-        {% endfor %}
+            <div class="media-body">
+                <h4 class="media-heading">{{ job.user.get_full_name }}</h4>
+                <small class="text-muted">{{ job.date_created }}</small>
+                <p>{{ job.description}}</p>
+                <ul class="list-inline">
+                    <li><a href="{% url 'jobs:detail' job_id=job.id %}">Detalji</a></li>                   
+                </ul>
+            </div>
+        </div>
+        
+        
+     
+        {% endfor %}        
     {% else %}
         <p>Trenutno nema objavljenih poslova.</p>
     {% endif %}
@@ -28,18 +31,25 @@
     {% if job_applications %}
         {% for application in job_applications %}
             {% with application.job as job %}
-                <h3>{{ job.user.first_name }} {{ job.user.last_name }}</h3>            
-            <p>
-            {{ job.description }}
-            </p>
-            <p>
-                Cijena: <strong>{{ job.price }}KM</strong>
-            </p>            
-            <p>
-            <a href="{% url 'jobs:detail' job_id=job.id %}">
-                Detalji
+          <hr />
+            <div class="media">
+            <a class="pull-left" href="#">
+              <img class="media-object img-circle" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIi8+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
             </a>
+            <div class="media-body">
+                <h4 class="media-heading">{{ job.user.get_full_name }}</h4>
+                <small class="text-muted">{{ job.date_created }}</small>
+                <p>{{ job.description}}</p>
+                <ul class="list-inline">
+                    <li><a href="{% url 'jobs:detail' job_id=job.id %}">Detalji</a></li>                   
+                </ul>
+            </div>
+        </div>
+        
+        
+        
             {% endwith %}
         {% endfor %}
     {% endif %}
+    <br />
 {% endblock %}

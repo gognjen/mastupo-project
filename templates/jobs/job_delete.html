@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>Obrisi posao?</h3>            
+        
+    
+            <form action="{% url 'jobs:delete' job_id=job.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Obrisi</button>
+            </form>
+    
+
+{% endblock %}
