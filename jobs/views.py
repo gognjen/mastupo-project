@@ -7,26 +7,20 @@ from django.contrib.auth.decorators import login_required
 
 def home(request):
     if request.user.is_authenticated():                
-        return redirect('dashboard')
+        if request.user.profile.is_student:            
+            job_applications = JobApplication.objects.filter(user=request.user)
+            available_jobs = Job.objects.annotate(
+                                            workers_found=Count('jobapplication')
+                                       ).filter(
+                                            workers_found=0
+                                       ).exclude(
+                                            id__in = job_applications.values_list('job__id', flat=True))
+            return render(request, 'jobs/student/dashboard.html', { 'jobs': available_jobs, 'job_applications': job_applications })
+        else:            
+            jobs = Job.objects.filter(user=request.user)
+            return render(request, 'jobs/dashboard.html', { 'jobs': jobs })         
     else:
         return render(request, 'jobs/homepage.html')
-
-
-@login_required
-def dashboard(request):    
-    if request.user.profile.is_student:            
-        job_applications = JobApplication.objects.filter(user=request.user)
-        available_jobs = Job.objects.annotate(
-                                        workers_found=Count('jobapplication')
-                                   ).filter(
-                                        workers_found=0
-                                   ).exclude(
-                                        id__in = job_applications.values_list('job__id', flat=True))
-        return render(request, 'jobs/student/dashboard.html', { 'jobs': available_jobs, 'job_applications': job_applications })
-    else:            
-        jobs = Job.objects.filter(user=request.user)
-        return render(request, 'jobs/dashboard.html', { 'jobs': jobs })                
-    
 
 
 @login_required
@@ -75,7 +69,7 @@ def job_edit(request, job_id=None):
     job = get_object_or_404(Job, pk=job_id)
     
     if job.user != request.user:
-        return redirect('dashboard')
+        return redirect('home')
     
     if request.POST:
         job_form = AddJobForm(request.POST, instance=job)
@@ -116,11 +110,11 @@ def job_delete(request, job_id):
     job = get_object_or_404(Job, pk=job_id)
     
     if job.user != request.user:
-        return redirect('dashboard')
+        return redirect('home')
     
     if request.POST:
         job.delete()
-        return redirect('dashboard')
+        return redirect('home')
     else:
         return render(request, 'jobs/job_delete.html', { 'job': job })
         
