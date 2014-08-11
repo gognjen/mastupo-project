@@ -13,14 +13,15 @@ class PhoneNumber(models.Model):
     
        
 class Job(models.Model):    
+    address = models.CharField(max_length=100)
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_modified = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    phone_number = models.ForeignKey(PhoneNumber)
+    phone_number = models.ForeignKey(PhoneNumber)    
     status = models.CharField(max_length=30)    
-    address = models.CharField(max_length=100)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)    
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)               
+    parent_id = models.IntegerField(default=0)
     
     def user_applied(self, user):
         return self.jobapplication_set.filter(user=user).count() > 0

@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import F, Count
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _
 from .forms import AddJobForm, PhoneNumberForm
 from .models import Job, PhoneNumber, JobApplication
-from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -12,12 +14,12 @@ def home(request):
             available_jobs = Job.objects.annotate(
                                             workers_found=Count('jobapplication')
                                        ).filter(
-                                            workers_found=0
+                                            workers_found=0, parent_id=0
                                        ).exclude(
                                             id__in = job_applications.values_list('job__id', flat=True))
             return render(request, 'jobs/student/dashboard.html', { 'jobs': available_jobs, 'job_applications': job_applications })
         else:            
-            jobs = Job.objects.filter(user=request.user)
+            jobs = Job.objects.filter(user=request.user, parent_id=0, status='published')
             return render(request, 'jobs/dashboard.html', { 'jobs': jobs })         
     else:
         return render(request, 'jobs/homepage.html')
@@ -43,7 +45,8 @@ def add_job(request):
                 number.save()                
                 
             job.phone_number = number
-            job.save()               
+            job.save()
+            messages.success(request, _("Job posted successfully."))
             return redirect('jobs:detail', job_id=job.id)
     else:        
         try:
@@ -62,7 +65,6 @@ def add_job(request):
         
     return render(request, 'jobs/add_job.html', { 'job_form': job_form, 'phone_number_form': phone_number_form })
 
-
 @login_required
 def job_edit(request, job_id=None):
     
@@ -75,6 +77,20 @@ def job_edit(request, job_id=None):
         job_form = AddJobForm(request.POST, instance=job)
         phone_number_form = PhoneNumberForm(request.POST, instance=job.phone_number)
         if job_form.is_valid() and phone_number_form.is_valid():
+            
+            backup_job = Job(
+                description = job.description,
+                price = job.price,
+                date_created = job.date_created,
+                date_modified = job.date_modified,
+                user = job.user,
+                phone_number = job.phone_number,
+                status = job.status,
+                address = job.address,
+                parent_id = job.id
+            )        
+            backup_job.save()        
+                    
             job = job_form.save(commit=False)
             job.user = request.user
             job.status = 'published'
@@ -112,8 +128,23 @@ def job_delete(request, job_id):
     if job.user != request.user:
         return redirect('home')
     
-    if request.POST:
-        job.delete()
+    if request.POST:               
+        
+        backup_job = Job(
+            description = job.description,
+            price = job.price,
+            date_created = job.date_created,
+            date_modified = job.date_modified,
+            user = job.user,
+            phone_number = job.phone_number,
+            status = job.status,
+            address = job.address,
+            parent_id = job.id
+        )        
+        backup_job.save()        
+        job.status = 'canceled'
+        job.save()        
+        
         return redirect('home')
     else:
         return render(request, 'jobs/job_delete.html', { 'job': job })

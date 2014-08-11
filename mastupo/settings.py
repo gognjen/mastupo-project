@@ -29,6 +29,8 @@ ALLOWED_HOSTS = ['*']
 
 
 TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.core.context_processors.i18n",
+    "django.contrib.messages.context_processors.messages",
     "django.contrib.auth.context_processors.auth",
     # Required by allauth template tags
     "django.core.context_processors.request",
@@ -57,7 +59,8 @@ INSTALLED_APPS = (
     'jobs',
     'profiles',
     'widget_tweaks',
-    'south',
+    'bootstrapform',
+    #'south',
     # The Django sites framework is required
     'django.contrib.sites',
 
@@ -69,6 +72,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.facebook',   
 )
 
+
 SITE_ID = 1
 
 MIDDLEWARE_CLASSES = (
@@ -78,11 +82,20 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
 )
+
+
+from django.contrib.messages import constants as message_constants
+
+MESSAGE_TAGS = {
+    message_constants.ERROR: 'danger'
+}
+
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 
-ACCOUNT_SIGNUP_FORM_CLASS = 'jobs.forms.SignupForm'
+ACCOUNT_SIGNUP_FORM_CLASS = 'profiles.forms.SignupForm'
 
 ACCOUNT_USERNAME_REQUIRED = False
 
@@ -106,9 +119,9 @@ LOGIN_REDIRECT_URL = '/'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'malihoroskop@gmail.com'
+EMAIL_HOST_USER = 'info@malistudentskiposlovi.com'
 EMAIL_HOST_PASSWORD = 'Og30lisa11'
-DEFAULT_FROM_EMAIL = 'malihoroskop@gmail.com'
+DEFAULT_FROM_EMAIL = 'info@malistudentskiposlovi.com'
 
 
 ROOT_URLCONF = 'mastupo.urls'
@@ -136,7 +149,7 @@ DATABASES = {'default': dj_database_url.config(
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'hr'
 
 TIME_ZONE = 'UTC'
 
@@ -146,6 +159,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
+
+LANGUAGES = (('hr','Hrvatski'),)
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

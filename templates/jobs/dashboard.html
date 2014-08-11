@@ -1,31 +1,58 @@
 {% extends 'base.html' %}
 {% load humanize %}
 {% block content %}
-    <h1>Tvoji poslovi</h1>
-    <a href="{% url "jobs:add_job" %}">Dodaj novi oglas za posao</a>    
-    {% if jobs %}    
-        {% for job in jobs %}
-        <div class="media">
-            <a class="pull-left" href="#">
-              <img class="media-object img-circle" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIi8+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
-            </a>
-            <div class="media-body">
-                <h4 class="media-heading">{{ job.user.get_full_name }}</h4>
-                <small class="text-muted">{{ job.date_created }}</small>
+    <div class="">
+        <h1>Dobrodošli!</h1>
+        <p class="lead">Objavite oglas za posao, mi ćemo vam pronaći radnika. Oglas koji objavite vidjeće samo naši studenti.</p>
+    </div>
+    <div class="row">
+        <div class="col-md-8">                               
+    
+    <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Vaši oglasi za posao</h3>
+            </div>                              
+    
+    {% if jobs %}
+        
+                 <ul class="list-group">
+     {% for job in jobs %}
+        <li class="list-group-item">            
+            <div class="media-body">                   
                 <p>{{ job.description}}</p>
+                <p>Cijena: <strong>{{ job.price }}KM</strong></p>
+                <p class="text-muted">{{ job.date_created }}</p>
                 <ul class="list-inline">
                     <li><a href="{% url 'jobs:detail' job_id=job.id %}">Detalji</a></li>
                     <li><a href="{% url 'jobs:edit' job_id=job.id %}">Izmijeni</a></li>
                     <li><a href="{% url 'jobs:delete' job_id=job.id %}">Obriši</a></li>
-                </ul>
+                </ul>                
             </div>
-        </div>
-        
-        
-        <hr />
+        </li>                       
         {% endfor %}        
+  </ul>
+                 
+        
+           
     {% else %}
-        <p>Trenutno nema objavljenih poslova.</p>
+    <div class="panel-body">
+        <p class="text-muted">Trenutno nemate objavljenih oglasa za posao. Objavite novi oglas za posao.</p>
+        </div>
     {% endif %}
-    <br />
+    </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+  <div class="panel-body">
+    <p>Dobrodošli! Objavite novi oglas za posao.</p>
+    <a class="btn btn-block btn-primary" href="{% url "jobs:add_job" %}">Dodaj novi oglas</a>    
+  </div>
+</div>
+            
+        </div>
+    </div>
+
+    
+    
+    
 {% endblock %}

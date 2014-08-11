@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
     <h3>{{ job.user.first_name }} {{ job.user.last_name }}</h3>            
             <p>
             {{ job.description }}
@@ -31,4 +32,9 @@
             {% endif %}
         {% endif %}
     {% endif %}
+    
+    <a href="{% url 'jobs:edit' job_id=job.id %}">Izmijeni</a> |
+    <a href="{% url 'jobs:delete' job_id=job.id %}">Obriši</a> |
+    <a href="{% url 'home' %}">Vrati se na početak</a></li>
+    
 {% endblock %}

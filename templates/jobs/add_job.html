@@ -2,27 +2,44 @@
 {% load widget_tweaks %}
 
 {% block content %}
-<h1>Objavi novi oglas za posao</h1>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>Objavi novi oglas za posao</h2>
    
+{% if job_form.errors or phone_number_form.errors %}
+	<div class="alert alert-danger">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+		{% for field in job_form %} 
+			{% if field.errors %}
+			<li>{{ field.label }}: {{ field.errors|striptags }}</li>
+			{% endif %}
+		{% endfor %}
+                {% for field in phone_number_form %} 
+			{% if field.errors %}
+			<li>{{ field.label }}: {{ field.errors|striptags }}</li>
+			{% endif %}
+		{% endfor %}
+	</div>
+{% endif %}
 <form class="form" action="{% url 'jobs:add_job' %}" method="post">
     {% csrf_token %}
     <fieldset>
         <legend>Lokacija</legend>
         {% with job_form.address as field %}                   
             <div class="form-group {% if field.errors %}has-error{% endif %}">                            
-                {{ field|add_class:'form-control input-lg' }}                        
+                {{ field|add_class:'form-control' }}                        
                 {% if field.errors %}
                 <span class='text-danger'>{{ field.errors|join:'<br />' }}</span>
                 {% endif %}                                                       
             </div>
             <span class="help-block">Mjesto ili adresa na koju student treba da dođe.</span>
         {% endwith %}
-    </fieldset>        
+    </fieldset>    
     <fieldset>            
         <legend>Opis posla</legend>
         {% with job_form.description as field %}        
         <div class="form-group {% if field.errors %}has-error{% endif %}">                   
-            {{ field|add_class:'form-control input-lg' }}            
+            {{ field|add_class:'form-control' }}            
             {% if field.errors %}
             <span class='text-danger'>{{ field.errors|join:'<br />' }}</span>
             {% endif %}                                          
@@ -34,9 +51,9 @@
         <legend>Dodaj broj telefona</legend>
         {% with phone_number_form.phone_number as field %}                        
             <div class="form-group {% if field.errors %}has-error{% endif %}">                                                 
-                <div class="input-group input-group-lg">
+                <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                    {{ field|add_class:'form-control input-lg' }}               
+                    {{ field|add_class:'form-control' }}               
                 </div>     
                 {% if field.errors %}
                 <span class='text-danger'>{{ field.errors|join:'<br />' }}</span>
@@ -50,15 +67,15 @@
         <legend>Cijena</legend>
         {% with job_form.price as field %}        
         <div class="form-group {% if field.errors %}has-error{% endif %}">                   
-             <div class="input-group input-group-lg">
+             <div class="input-group">
                     <span class="input-group-addon">KM</span>
-                    {{ field|add_class:'form-control input-lg' }}               
+                    {{ field|add_class:'form-control' }}               
                 </div>   
             {% if field.errors %}
             <span class='text-danger'>{{ field.errors|join:'<br />' }}</span>
             {% endif %}                                           
         </div>
-        <span class="help-block ">Napišite koliko novca želite dati za obavljanje ovog posla.</span>
+        <span class="help-block ">Napišite koliko novca želite dati studentu za obavljanje ovog posla.</span>
         {% endwith %}              
     </fieldset>
     
@@ -69,6 +86,14 @@
     </div>
     
   
-</form>
+</form>     
+        </div>
+        <div class="col-md-4">
+            
+        </div>
+    </div>
+                   
+     
+
 
 {% endblock %}

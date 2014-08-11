@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^$', 'jobs.views.home', name="home"),    
     url(r'^jobs/', include('jobs.urls', namespace="jobs")),
     url(r'^accounts/', include('allauth.urls')),
+    url(r'^accounts/profile$', 'profiles.views.profile', name="profile"),
     url(r'^admin/', include(admin.site.urls)),
 )
 
