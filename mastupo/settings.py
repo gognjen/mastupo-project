@@ -60,7 +60,7 @@ INSTALLED_APPS = (
     'profiles',
     'widget_tweaks',
     'bootstrapform',
-    #'south',
+    'south',
     # The Django sites framework is required
     'django.contrib.sites',
 
