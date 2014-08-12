@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h3>Obrisi posao?</h3>            
-        
-    
+    <h3>Otkažite posao</h3>            
+        <p>Da li ste sigurni da želite otkazati ovaj posao?</p>
+      
             <form action="{% url 'jobs:delete' job_id=job.id %}" method="post">
                 {% csrf_token %}
-                <button type="submit">Obrisi</button>
+                <button class="btn btn-danger" type="submit">Otkaži</button>
             </form>
     
 
