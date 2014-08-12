@@ -1,4 +1,6 @@
 /* Space out content a bit */
+@import url("//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic&subset=latin,latin-ext");
+
 body {
   padding-top: 20px;
   padding-bottom: 20px;
