@@ -19,7 +19,7 @@ class SignupForm(forms.Form):
         user.save()
         profile = Profile(user=user)
         profile.save()
-        notification.send([User.objects.get(username='ognjen'),], "accounts_register")
+        #notification.send([User.objects.get(username='ognjen'),], "accounts_register")
         
         
 
