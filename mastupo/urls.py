@@ -5,7 +5,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'mastupo.views.home', name='home'),
+    url(r'^contact$', 'jobs.views.about', name='contact'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^$', 'jobs.views.home', name="home"),    
     url(r'^jobs/', include('jobs.urls', namespace="jobs")),

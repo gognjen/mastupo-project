@@ -685,6 +685,8 @@ msgstr "E-mail s linkom za potvrdu registracije je poslan na %(email)s"
 msgid "Delete Password"
 msgstr "Brisanje lozinke"
 
+
+
 msgid ""
 "You may delete your password since you are currently logged in using "
 "OpenID."
@@ -700,3 +702,9 @@ msgstr "Lozinka obrisana"
 
 msgid "Your password has been deleted."
 msgstr "Vaša lozinka je obrisana"
+
+msgid "About"
+msgstr "O nama"
+
+msgid "Contact"
+msgstr "Kontakt"

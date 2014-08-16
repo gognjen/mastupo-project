@@ -24,6 +24,8 @@ def home(request):
     else:
         return render(request, 'jobs/homepage.html')
 
+def about(request):
+    return render(request, 'jobs/about.html')
 
 @login_required
 def add_job(request):
