@@ -60,6 +60,7 @@ INSTALLED_APPS = (
     'profiles',
     'widget_tweaks',
     'bootstrapform',
+    'notification',
     'south',
     # The Django sites framework is required
     'django.contrib.sites',
@@ -187,3 +188,4 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(BASE_DIR, 'templates'),
 )
+

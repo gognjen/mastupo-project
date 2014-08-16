@@ -2,7 +2,8 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from .models import Profile
-
+from notification import models as notification
+from django.contrib.auth.models import User
 
 class SignupForm(forms.Form):
     first_name = forms.CharField(max_length=30,
@@ -18,6 +19,7 @@ class SignupForm(forms.Form):
         user.save()
         profile = Profile(user=user)
         profile.save()
+        notification.send([User.objects.get(username='ognjen'),], "accounts_register")
         
         
 
