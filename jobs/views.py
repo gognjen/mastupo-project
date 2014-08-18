@@ -6,7 +6,9 @@ from django.utils.translation import ugettext_lazy as _
 from .forms import AddJobForm, PhoneNumberForm
 from .models import Job, PhoneNumber, JobApplication
 
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def home(request):
     if request.user.is_authenticated():                
         if request.user.profile.is_student:            
