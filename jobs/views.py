@@ -9,8 +9,8 @@ from .models import Job, PhoneNumber, JobApplication
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.http import require_http_methods
 
-@xframe_options_exempt
 @require_http_methods(["GET", "POST"])
+@xframe_options_exempt
 def home(request):
     if request.user.is_authenticated():                
         if request.user.profile.is_student:            
