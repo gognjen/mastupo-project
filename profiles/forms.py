@@ -23,13 +23,11 @@ class SignupForm(forms.Form):
         
         
 
-class ProfileForm(forms.ModelForm):    
+class ProfileForm(forms.Form):    
     first_name = forms.CharField(max_length=30,
                                  label=_('First name'),
                                  widget=forms.TextInput(attrs={'placeholder':_('First name')}))
     last_name = forms.CharField(max_length=30,
                                 label=_('Last name'),
-                                widget=forms.TextInput(attrs={'placeholder':_('Last name')}))
-    class Meta:
-        model = Profile
-        fields = ('first_name', 'last_name')
+                                widget=forms.TextInput(attrs={'placeholder':_('Last name')}))      
+    
