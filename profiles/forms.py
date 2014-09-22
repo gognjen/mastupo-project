@@ -16,9 +16,7 @@ class SignupForm(forms.Form):
     def signup(self, request, user):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']        
-        user.save()
-        profile = Profile(user=user)
-        profile.save()
+        user.save()        
         #notification.send([User.objects.get(username='ognjen'),], "accounts_register")
         
         

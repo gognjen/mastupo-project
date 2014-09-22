@@ -62,6 +62,7 @@ INSTALLED_APPS = (
     'bootstrapform',
     'notification',
     'south',
+    'debug_toolbar',
     # The Django sites framework is required
     'django.contrib.sites',
 
@@ -83,7 +84,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     #'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.locale.LocaleMiddleware",    
 )
 
 
@@ -105,6 +106,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = False
 
 ACCOUNT_LOGOUT_ON_GET = True
+
+SOCIALACCOUNT_AUTO_SIGNUP = False
 
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
