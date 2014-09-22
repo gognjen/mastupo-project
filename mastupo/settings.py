@@ -62,7 +62,7 @@ INSTALLED_APPS = (
     'bootstrapform',
     'notification',
     'south',
-    'debug_toolbar',
+    #'debug_toolbar',
     # The Django sites framework is required
     'django.contrib.sites',
 
