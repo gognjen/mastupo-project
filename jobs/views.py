@@ -4,10 +4,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from .forms import AddJobForm, PhoneNumberForm
-from .models import Job, PhoneNumber, JobApplication
+from .models import Job, PhoneNumber, JobApplication, ExternalJob
 
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.http import require_http_methods
+
+from lxml import html
+import urllib2
+from django.template.defaultfilters import slugify
+
+import re
+from datetime import datetime
 
 @require_http_methods(["GET", "POST"])
 @xframe_options_exempt
@@ -26,7 +33,10 @@ def home(request):
             jobs = Job.objects.filter(user=request.user, parent_id=0, status='published')
             return render(request, 'jobs/dashboard.html', { 'jobs': jobs })         
     else:
-        return render(request, 'jobs/homepage.html')
+        
+        external_jobs = ExternalJob.objects.all().order_by('-date_published')
+        
+        return render(request, 'jobs/homepage.html', { 'external_jobs': external_jobs })
 
 def about(request):
     return render(request, 'jobs/about.html')
@@ -78,6 +88,8 @@ def job_edit(request, job_id=None):
     
     if job.user != request.user:
         return redirect('home')
+    
+    print request.POST
     
     if request.POST:
         job_form = AddJobForm(request.POST, instance=job)
@@ -134,6 +146,8 @@ def job_delete(request, job_id):
     if job.user != request.user:
         return redirect('home')
     
+    print request.POST
+    
     if request.POST:               
         
         backup_job = Job(
@@ -181,3 +195,54 @@ def cancel_job_application(request, job_id):
 def my_jobs(request):
     jobs = Job.objects.filter(jobapplication__user=request.user)
     return render(request, 'jobs/job_list.html', { 'jobs': jobs })
+          
+
+def external_detail(request, job_id):    
+    job = get_object_or_404(ExternalJob, pk=job_id)    
+    return render(request, 'jobs/external_job_details.html', { 'job': job })
+
+
+def external_jobs(request):
+    
+    if request.POST:
+        
+        next_page = ['http://posao.banjaluka.com/?page_id=4']
+        items = []       
+
+        while next_page:
+            
+            req = urllib2.Request(next_page[0])
+            req.add_header('User-agent', 'Mozilla 5.10')
+            res = urllib2.urlopen(req)
+            page = res.read()    
+            res.close()
+        
+            tree = html.fromstring(page)           
+               
+            titles = tree.xpath('//*[@id="single-post"]/form/div/div/div/h3/a/text()')
+            external_links = tree.xpath('//*[@id="single-post"]/form/div/div/div/h3/a/@href')
+            locations = tree.xpath('//*[@id="single-post"]/form/div/div/div/h4/text()')
+            employers = tree.xpath('//*[@id="single-post"]/form/div/div/div/p[1]/text()')
+            categories = tree.xpath('//*[@id="single-post"]/form/div/div/div/p[2]/a/text()')            
+            dates = tree.xpath('//*[@id="single-post"]/form/div/div/div/p[3]/text()')
+            
+            for title, link, location, employer, category, date in zip(titles, external_links, locations, employers, categories, dates):            
+                parsed_dates = re.findall(r'\d{2}.\d{2}.\d{4}.', date)
+                published = datetime.strptime(parsed_dates[0], "%d.%m.%Y.").date()
+                expire = datetime.strptime(parsed_dates[1], "%d.%m.%Y.").date()
+            
+                try:
+                    job = ExternalJob.objects.get(link=link)
+                except ExternalJob.DoesNotExist:
+                    job = ExternalJob(source="posao.banjaluka.com", title=title, location=location, link=link, employer=employer, category=category, date_expire=expire, date_published=published)           
+                    job.save()                        
+    
+            next_page = tree.xpath('//*[@id="single-post"]/form/div/div[7]/div[3]/a/@href')
+            
+        return redirect('jobs:external_jobs')
+        
+    else:                   
+        
+        items = ExternalJob.objects.all().order_by('-date_published')
+                        
+        return render(request, 'jobs/external_jobs.html', { 'items': items, 'jobs' : [] })

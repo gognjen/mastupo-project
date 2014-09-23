@@ -32,6 +32,19 @@ class Job(models.Model):
     def __unicode__(self):
         return self.description
     
+    
+class ExternalJob(models.Model):
+    source = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
+    category = models.CharField(max_length=50)
+    link = models.URLField()
+    date_published = models.DateField()
+    date_expire = models.DateField()
+    location = models.CharField(max_length=100)
+    employer = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.title        
 
 class JobApplication(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
