@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+    
+    <h1>Ostali oglasi za posao</h1>
+            <p class="lead">Oglasi objavljeni na portalu posao.banjaluka.com</p>
+    
+    
+    
+    <div class="row">
+        <div class="col-md-8">                               
+    
+    <div class="panel panel-default">                
+    {% if items %}
+        
+    <ul class="list-group">
+     {% for item in items %}
+        <li class="list-group-item">                
+            <h3><a href="{% url 'jobs:external_detail' job_id=item.id %}">{{ item.title }}</a></h3>
+            <h4>{{ item.location }}</h4>        
+            <p>{{ item.employer }}</p>
+            <p>Objavljeno: {{ item.date_published }}</p>                             
+        </li>                       
+        {% endfor %}        
+    </ul>                                   
+    {% else %}
+    <div class="panel-body">
+        <p class="text-muted">Trenutno nema objavljenih oglasa za posao.</p>
+        </div>
+    {% endif %}
+    </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+  <div class="panel-body">
+    <p>Dobrodošli! Objavite novi oglas za posao.</p>
+    <form class="form" action="{% url 'jobs:external_jobs' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" value="refres" name="refresh" />
+                <button type="submit" class="btn btn-block btn-default">Osvježi listu</button>
+            </form>
+  </div>
+</div>
+            
+        </div>
+    </div>
+    
+    
+{% endblock%}

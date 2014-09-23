@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+        <h3>{{ job.title }}</h3>
+        <h4>{{ job.location }}</h4>
+        <p>{{ job.category }}</p>
+        <p>{{ job.employer }}</p>
+        <p>Objavljeno: {{ job.date_published }}</p>
+        <p>Ističe: {{ job.date_expire }}</p>
+        <a class="btn btn-default" href="{% url 'jobs:external_jobs' %}">Povratak na listu</a> <a class="btn btn-primary" href="{{ job.link }}" target="_blank">Više informacija</a>
+{% endblock %}
