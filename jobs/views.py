@@ -214,7 +214,7 @@ def external_jobs(request):
             req = urllib2.Request(next_page[0])
             req.add_header('User-agent', 'Mozilla 5.10')
             res = urllib2.urlopen(req)
-            page = res.read()    
+            page = res.read().decode('utf-8')    
             res.close()
         
             tree = html.fromstring(page)           
