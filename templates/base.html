@@ -46,8 +46,7 @@
     <div class="container">
       <div class="header">
         <ul class="nav nav-pills pull-right">
-          <li><a href="{% url "home" %}">{% trans "Home" %}</a></li>
-          <li><a href="{% url "contact" %}">{% trans "Contact" %}</a></li>
+          <li><a href="{% url 'jobs:external_jobs' %}">{% trans "Ostali poslovi" %}</a></li>          
           {% if not user.is_authenticated %}                      
           <li><a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>          
           <li><a href="{% url 'account_login' %}">{% trans "Sign In" %}</a></li>                    
@@ -56,7 +55,7 @@
           <li><a href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a></li>
           {% endif %}
         </ul>
-        <h3 class="text-muted">Mali studentski poslovi</h3>
+        <h3 class="text-muted"><a href="{% url "home" %}">Mali studentski poslovi</a></h3>
       </div>
         
       {% for message in messages %}
@@ -68,8 +67,9 @@
       {% block content %}{% endblock %}
       <br />
       <br />
-      <div class="footer">        
+      <div class="footer text-center">        
         <p>&copy; Mali studentski poslovi 2014</p>
+        <a href="{% url "home" %}">{% trans "Home" %}</a> • <a href="{% url "contact" %}">{% trans "Contact" %}</a>
       </div>
 
     </div> <!-- /container -->

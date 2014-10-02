@@ -34,14 +34,14 @@ class Job(models.Model):
     
     
 class ExternalJob(models.Model):
-    source = models.CharField(max_length=100)
-    title = models.CharField(max_length=100)
+    source = models.CharField(max_length=200)
+    title = models.CharField(max_length=200)
     category = models.CharField(max_length=50)
     link = models.URLField()
     date_published = models.DateField()
     date_expire = models.DateField()
-    location = models.CharField(max_length=100)
-    employer = models.CharField(max_length=100)
+    location = models.CharField(max_length=200)
+    employer = models.CharField(max_length=200)
 
     def __unicode__(self):
         return self.title        
